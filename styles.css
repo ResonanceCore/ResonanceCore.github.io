@@ -3,15 +3,15 @@
    ============================ */
 
 :root {
-  --bg: #0e0e0d;
-  --bg-dark: #080808;
-  --surface: #141413;
-  --border: rgba(255, 255, 255, 0.07);
-  --text: #e8e4dc;
-  --text-muted: #7a7570;
-  --text-faint: #3a3632;
-  --accent: #c8b89a;
-  --accent-dim: rgba(200, 184, 154, 0.15);
+  --bg: #f5f5f4;
+  --bg-dark: #eeede9;
+  --surface: #edece8;
+  --border: rgba(15, 15, 15, 0.09);
+  --text: #0f0f0e;
+  --text-muted: #6b6760;
+  --text-faint: #b0ada8;
+  --accent: #4a3f2e;
+  --accent-dim: rgba(74, 63, 46, 0.12);
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
@@ -65,8 +65,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 @keyframes lineGrow {
-  from { height: 0; }
-  to   { height: 80px; }
+  from { height: 0; opacity: 0; }
+  to   { height: 60px; opacity: 1; }
 }
 
 /* ============================
@@ -83,17 +83,18 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 2.5rem;
-  background: rgba(14, 14, 13, 0.85);
+  background: rgba(245, 245, 244, 0.88);
   backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
-  transition: border-color 0.3s var(--ease);
+  transition: border-color 0.4s var(--ease);
 }
 
 .nav-logo {
   font-family: var(--font-display);
-  font-size: 1.1rem;
-  letter-spacing: 0.05em;
-  color: var(--accent);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--text);
 }
 
 .nav-right {
@@ -107,8 +108,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  transition: color 0.2s var(--ease);
+  color: var(--text-faint);
+  transition: color 0.3s var(--ease);
 }
 
 .nav-link:hover {
@@ -117,14 +118,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .lang-toggle {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
   border: 1px solid var(--border);
-  padding: 0.3rem 0.65rem;
+  padding: 0.28rem 0.62rem;
   border-radius: 2px;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+  transition: all 0.3s var(--ease);
 }
 
 .lang-toggle:hover {
@@ -141,7 +142,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 8rem 2.5rem 4rem;
+  padding: 8rem 2.5rem 5rem;
   position: relative;
   overflow: hidden;
 }
@@ -150,7 +151,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 70% 40%, rgba(200, 184, 154, 0.04) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 65% 35%, rgba(74, 63, 46, 0.04) 0%, transparent 65%);
   pointer-events: none;
 }
 
@@ -166,15 +167,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-faint);
   margin-bottom: 2.5rem;
   animation: fadeUp 0.9s var(--ease) 0.1s both;
 }
 
-/* Waveform decoration */
 .waveform-icon {
   display: flex;
   align-items: center;
@@ -187,7 +187,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   width: 2px;
   background: var(--accent);
   border-radius: 1px;
-  animation: pulse 1.6s ease-in-out infinite;
+  animation: pulse 1.8s ease-in-out infinite;
 }
 .waveform-icon span:nth-child(1) { height: 4px;  animation-delay: 0s; }
 .waveform-icon span:nth-child(2) { height: 8px;  animation-delay: 0.15s; }
@@ -204,17 +204,13 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-size: clamp(4rem, 12vw, 10rem);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
   color: var(--text);
-  margin-bottom: 2rem;
+  margin-bottom: 2.25rem;
   animation: fadeUp 0.9s var(--ease) 0.2s both;
 }
 
 .hero-roles {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem 1rem;
   font-family: var(--font-mono);
   font-size: 0.82rem;
   letter-spacing: 0.04em;
@@ -223,13 +219,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   animation: fadeUp 0.9s var(--ease) 0.35s both;
 }
 
-.divider {
-  color: var(--text-faint);
-}
-
 .hero-bio {
-  max-width: 480px;
-  font-size: 0.95rem;
+  max-width: 440px;
+  font-size: 1rem;
   color: var(--text-muted);
   line-height: 1.8;
   margin-bottom: 3rem;
@@ -239,18 +231,18 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .hero-cta {
   display: inline-block;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.15em;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--accent);
   border-bottom: 1px solid var(--accent);
   padding-bottom: 2px;
-  transition: opacity 0.2s var(--ease);
+  transition: opacity 0.3s var(--ease);
   animation: fadeUp 0.9s var(--ease) 0.55s both;
 }
 
 .hero-cta:hover {
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 .hero-scroll-hint {
@@ -266,7 +258,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: block;
   width: 1px;
   background: linear-gradient(to bottom, transparent, var(--accent));
-  animation: lineGrow 1.2s var(--ease) 1s both;
+  animation: lineGrow 1.4s var(--ease) 1.2s both;
 }
 
 /* ============================
@@ -285,16 +277,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   padding: var(--space-xl) 2.5rem;
 }
 
-.section--dark > * {
-  max-width: var(--max-w);
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .section--dark .section-header,
 .section--dark .section-intro,
-.section--dark .podcast-list,
-.section--dark .about-grid {
+.section--dark .podcast-list {
   max-width: var(--max-w);
   margin-left: auto;
   margin-right: auto;
@@ -311,25 +296,26 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .section-num {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-faint);
   letter-spacing: 0.15em;
 }
 
 .section-title {
   font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .section-intro {
-  font-size: 0.88rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   margin-bottom: var(--space-md);
   font-family: var(--font-mono);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 /* ============================
@@ -348,8 +334,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   padding: var(--space-lg) var(--space-md);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  transition: background 0.25s var(--ease);
+  gap: 0.9rem;
+  transition: background 0.35s var(--ease);
 }
 
 .project:hover {
@@ -368,46 +354,46 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .project-index {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-faint);
   letter-spacing: 0.15em;
 }
 
 .project-tag {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   border: 1px solid var(--accent-dim);
-  padding: 0.2rem 0.55rem;
+  padding: 0.18rem 0.52rem;
   border-radius: 2px;
 }
 
 .project-title {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-size: clamp(1.3rem, 2.8vw, 1.9rem);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.01em;
+  color: var(--text);
 }
 
 .project-client {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--text-faint);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .project-desc {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   color: var(--text-muted);
   line-height: 1.8;
   max-width: 460px;
 }
 
-/* Video embed area */
 .video-trigger {
   margin-top: auto;
   cursor: pointer;
@@ -424,7 +410,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
   overflow: hidden;
 }
 
@@ -441,8 +427,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-faint);
-  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
+  color: var(--text-muted);
+  transition: all 0.3s var(--ease);
 }
 
 .play-icon svg {
@@ -484,17 +470,17 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .project-tools {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
 }
 
 .project-tools span {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
+  font-size: 0.6rem;
+  letter-spacing: 0.07em;
   color: var(--text-faint);
   border: 1px solid var(--border);
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.45rem;
   border-radius: 2px;
 }
 
@@ -517,16 +503,16 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .podcast-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1.2rem 1.5rem;
   display: flex;
   align-items: center;
   cursor: pointer;
   user-select: none;
-  transition: background 0.2s var(--ease);
+  transition: background 0.3s var(--ease);
 }
 
 .podcast-header:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(15, 15, 14, 0.03);
 }
 
 .podcast-info {
@@ -538,16 +524,16 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .podcast-num {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
   color: var(--text-muted);
 }
 
 .podcast-arrow {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--text-faint);
-  transition: transform 0.25s var(--ease), color 0.2s var(--ease);
+  transition: transform 0.35s var(--ease), color 0.3s var(--ease);
   line-height: 1;
 }
 
@@ -579,9 +565,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .about-lead {
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
-  font-style: italic;
+  font-size: clamp(1.25rem, 2.4vw, 1.8rem);
   font-weight: 400;
+  font-style: italic;
   line-height: 1.5;
   color: var(--text);
   margin-bottom: 1.75rem;
@@ -591,16 +577,35 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-size: 0.95rem;
   color: var(--text-muted);
   margin-bottom: 1.1rem;
-  line-height: 1.85;
+  line-height: 1.9;
+}
+
+.about-portrait {
+  margin-bottom: 2rem;
+}
+
+.portrait-img {
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(100%) contrast(1.05);
+  opacity: 0.78;
+  transition: opacity 0.4s var(--ease);
+}
+
+.portrait-img:hover {
+  opacity: 1;
 }
 
 .about-block {
-  margin-bottom: var(--space-md);
+  margin-bottom: 2rem;
 }
 
 .about-block-title {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -612,7 +617,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .edu-list {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.2rem;
 }
 
 .edu-list li {
@@ -620,11 +625,12 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: flex-start;
   gap: 1.25rem;
   font-size: 0.875rem;
+  color: var(--text);
 }
 
 .edu-year {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--accent);
   letter-spacing: 0.05em;
   min-width: 2.5rem;
@@ -634,14 +640,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .edu-school {
   display: block;
   color: var(--text-faint);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   margin-top: 0.15rem;
 }
 
 .tools-prose {
   font-size: 0.875rem;
   color: var(--text-muted);
-  line-height: 1.85;
+  line-height: 1.9;
 }
 
 /* ============================
@@ -660,9 +666,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .contact-lead {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  font-style: italic;
+  font-size: clamp(1.35rem, 2.8vw, 2.1rem);
   font-weight: 400;
+  font-style: italic;
   color: var(--text);
   max-width: 500px;
 }
@@ -677,9 +683,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem;
+  padding: 1.2rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  transition: background 0.2s var(--ease);
+  transition: background 0.3s var(--ease);
 }
 
 .contact-link:last-child {
@@ -696,7 +702,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .contact-link-label {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -704,9 +710,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .contact-link-value {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   color: var(--text-muted);
-  transition: color 0.2s var(--ease);
+  transition: color 0.3s var(--ease);
 }
 
 .contact-link:hover .contact-link-value {
@@ -724,7 +730,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   justify-content: space-between;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.1em;
   color: var(--text-faint);
 }
@@ -735,8 +741,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .fade-in {
   opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
+  transform: translateY(18px);
+  transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
 }
 
 .fade-in.visible {
@@ -762,7 +768,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   }
 
   .hero {
-    padding: 7rem 1.5rem 3rem;
+    padding: 7rem 1.5rem 3.5rem;
   }
 
   .section {
@@ -786,6 +792,12 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
     gap: var(--space-md);
   }
 
+  .portrait-img {
+    max-width: 140px;
+    aspect-ratio: 1/1;
+    border-radius: 2px;
+  }
+
   .contact-link {
     flex-direction: column;
     align-items: flex-start;
@@ -805,11 +817,6 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   }
 
   .hero-roles {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .divider {
-    display: none;
+    font-size: 0.75rem;
   }
 }

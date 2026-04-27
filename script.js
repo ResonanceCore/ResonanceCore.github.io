@@ -16,10 +16,13 @@
     document.documentElement.setAttribute('lang', lang === 'pt' ? 'pt-BR' : 'en');
 
     document.querySelectorAll('[data-pt]').forEach(el => {
+      // Only update text if element has no child elements (text-only nodes)
+      // This prevents destroying child elements like <br> or <span> inside the node
+      const hasChildElements = Array.from(el.childNodes).some(n => n.nodeType === Node.ELEMENT_NODE);
+      if (hasChildElements) return;
+
       const text = lang === 'pt' ? el.dataset.pt : el.dataset.en;
-      if (text === undefined) return;
-      // Only update if element has no child elements
-      if (el.children.length === 0) {
+      if (text !== undefined) {
         el.textContent = text;
       }
     });
@@ -91,7 +94,7 @@
         }
       });
     },
-    { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
   );
 
   document.querySelectorAll(
@@ -109,9 +112,9 @@
   const nav = document.querySelector('.nav');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 60) {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.05)';
+      nav.style.borderBottomColor = 'rgba(15,15,14,0.06)';
     } else {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.07)';
+      nav.style.borderBottomColor = 'rgba(15,15,14,0.09)';
     }
   }, { passive: true });
 
