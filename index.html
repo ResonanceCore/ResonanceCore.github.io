@@ -1,616 +1,316 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>George Nogueira de Melo — Designer de Som</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:#0a0a0a; --surface:#111111; --surface2:#181818;
-    --gold:#c8a96e; --gold-dim:#7a6340;
-    --white:#f0ece4; --muted:#5a5650; --text:#c8c4bc;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:'DM Mono',monospace;font-weight:300;font-size:14px;line-height:1.7;overflow-x:hidden;cursor:none}
-
-  .cursor{position:fixed;width:10px;height:10px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;mix-blend-mode:difference}
-  .cursor.big{width:40px;height:40px;background:rgba(200,169,110,.2);border:1px solid var(--gold)}
-
-  .wave-bg{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.03}
-
-  /* NAV */
-  nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:24px 48px}
-  nav::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,10,10,.95) 0%,transparent 100%);z-index:-1}
-  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:4px;color:var(--gold);text-decoration:none}
-  .nav-right{display:flex;align-items:center;gap:32px}
-  .nav-links{display:flex;gap:32px;list-style:none}
-  .nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:color .3s}
-  .nav-links a:hover{color:var(--gold)}
-
-  /* LANG TOGGLE */
-  .lang-toggle{display:flex;gap:4px;align-items:center;background:var(--surface2);border:1px solid #252525;border-radius:24px;padding:4px}
-  .lang-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border:none;background:transparent;color:var(--muted);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;border-radius:20px;cursor:pointer;transition:background .25s,color .25s}
-  .lang-btn .flag{font-size:14px}
-  .lang-btn.active{background:var(--gold);color:#0a0a0a;font-weight:400}
-  .lang-btn:not(.active):hover{color:var(--text)}
-
-  /* HERO */
-  .hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:0 48px;z-index:1}
-  .hero-inner{max-width:900px}
-  .hero-eyebrow{font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:flex;align-items:center;gap:16px}
-  .hero-eyebrow::before{content:'';width:40px;height:1px;background:var(--gold)}
-  .hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,12vw,160px);line-height:.9;color:var(--white);letter-spacing:2px}
-  .hero h1 em{font-family:'DM Serif Display',serif;font-style:italic;color:var(--gold)}
-  .hero-sub{margin-top:40px;font-size:13px;color:var(--muted);max-width:480px;line-height:1.9;letter-spacing:.5px}
-  .hero-cta{margin-top:48px;display:flex;gap:24px;align-items:center}
-  .btn-primary{background:var(--gold);color:#0a0a0a;padding:14px 36px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;font-weight:400;transition:background .3s,transform .2s;display:inline-block}
-  .btn-primary:hover{background:var(--white);transform:translateY(-2px)}
-  .btn-ghost{color:var(--muted);font-size:11px;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:8px}
-  .btn-ghost:hover{color:var(--gold)}
-  .waveform-bar{position:absolute;bottom:80px;right:48px;display:flex;align-items:flex-end;gap:3px;height:60px}
-  .waveform-bar span{display:block;width:3px;background:var(--gold-dim);border-radius:2px;animation:wavepulse 1.5s ease-in-out infinite}
-  @keyframes wavepulse{0%,100%{transform:scaleY(.3);opacity:.4}50%{transform:scaleY(1);opacity:1}}
-
-  /* STATS */
-  .stats{position:relative;z-index:1;border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e;display:grid;grid-template-columns:repeat(4,1fr)}
-  .stat{padding:48px;border-right:1px solid #1e1e1e;transition:background .4s}
-  .stat:last-child{border-right:none}
-  .stat:hover{background:var(--surface)}
-  .stat-number{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--gold);line-height:1;display:block}
-  .stat-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-top:8px;display:block}
-
-  /* SECTIONS */
-  section{position:relative;z-index:1;padding:120px 48px}
-  .section-header{display:flex;align-items:baseline;gap:24px;margin-bottom:80px}
-  .section-num{font-size:11px;letter-spacing:2px;color:var(--gold-dim)}
-  .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,72px);color:var(--white);letter-spacing:2px;line-height:1}
-  .section-line{flex:1;height:1px;background:#1e1e1e;align-self:center}
-
-  /* TIMELAPSE */
-  #timelapse{background:var(--surface)}
-  .video-container{position:relative;width:100%;padding-bottom:56.25%;background:#000;border:1px solid #1e1e1e;overflow:hidden}
-  .video-container iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-  .video-caption{margin-top:20px;font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:flex;align-items:center;gap:12px}
-  .video-caption::before{content:'';width:24px;height:1px;background:var(--gold-dim)}
-
-  /* DISCIPLINES */
-  .disciplines-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-  .discipline-card{background:var(--surface);padding:48px 40px;position:relative;overflow:hidden;transition:background .4s;cursor:none}
-  .discipline-card:hover{background:var(--surface2)}
-  .disc-num{font-family:'Bebas Neue',sans-serif;font-size:96px;color:#1a1a1a;position:absolute;top:-10px;right:16px;line-height:1;pointer-events:none;opacity:.5;transition:opacity .4s}
-  .discipline-card:hover .disc-num{color:#222;opacity:1}
-  .disc-icon{font-size:28px;margin-bottom:20px;display:block}
-  .disc-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--white);margin-bottom:12px}
-  .disc-desc{font-size:12px;color:var(--muted);line-height:1.8}
-  .disc-tag{display:inline-block;margin-top:20px;padding:4px 12px;border:1px solid var(--gold-dim);color:var(--gold-dim);font-size:10px;letter-spacing:2px;text-transform:uppercase}
-
-  /* FILMS */
-  #films{background:var(--surface)}
-  .films-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-  .film-card{display:flex;flex-direction:column;gap:16px}
-  .film-embed{position:relative;width:100%;padding-bottom:56.25%;background:#000;border:1px solid #1e1e1e;overflow:hidden}
-  .film-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
-  .film-info{padding:0 4px}
-  .film-title{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white);margin-bottom:4px}
-  .film-role{font-size:10px;letter-spacing:2px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px}
-  .film-desc{font-size:12px;color:var(--muted);line-height:1.8}
-
-  /* PODCAST */
-  .podcast-intro{font-size:13px;color:var(--muted);max-width:560px;line-height:1.9;margin-bottom:56px}
-  .podcast-grid{display:flex;flex-direction:column;gap:24px}
-  .podcast-item{display:flex;flex-direction:column;gap:8px}
-  .podcast-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);padding-left:4px}
-  .podcast-item iframe{border-radius:12px;display:block}
-
-  /* TIMELINE */
-  #work{background:var(--surface)}
-  .timeline{position:relative;padding-left:48px}
-  .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,var(--gold) 0%,#1e1e1e 100%)}
-  .timeline-item{position:relative;margin-bottom:64px;padding-bottom:64px;border-bottom:1px solid #151515}
-  .timeline-item:last-child{border-bottom:none;margin-bottom:0}
-  .timeline-dot{position:absolute;left:-54px;top:8px;width:12px;height:12px;border-radius:50%;border:2px solid var(--gold);background:var(--bg)}
-  .timeline-dot::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:4px;border-radius:50%;background:var(--gold)}
-  .timeline-meta{font-size:10px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;margin-bottom:12px}
-  .timeline-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--white);margin-bottom:8px}
-  .timeline-role{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:16px}
-  .timeline-desc{color:var(--muted);font-size:13px;max-width:600px;line-height:1.8}
-  .timeline-tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
-  .tag{padding:3px 10px;border:1px solid #252525;color:var(--muted);font-size:10px;letter-spacing:1.5px;text-transform:uppercase}
-
-  /* EDUCATION — 3 cards */
-  #education{}
-  .edu-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-  .edu-card{background:var(--surface);padding:40px;position:relative;overflow:hidden}
-  .edu-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
-  .edu-degree{font-family:'DM Serif Display',serif;font-style:italic;font-size:13px;color:var(--gold);margin-bottom:8px}
-  .edu-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);letter-spacing:1px;line-height:1.1;margin-bottom:8px}
-  .edu-institution{font-size:12px;color:var(--text);margin-bottom:4px}
-  .edu-detail{font-size:11px;color:var(--muted)}
-
-  /* SKILLS */
-  #skills{background:var(--surface)}
-  .skills-two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px}
-  .skill-group-title{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:32px;padding-bottom:12px;border-bottom:1px solid #1e1e1e}
-  .skill-item{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
-  .skill-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text)}
-  .skill-pct{color:var(--gold-dim)}
-  .skill-bar{height:2px;background:#1a1a1a;position:relative;overflow:hidden}
-  .skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));transform-origin:left;animation:barfill 1.5s ease forwards;transform:scaleX(0)}
-  @keyframes barfill{to{transform:scaleX(1)}}
-
-  /* CONTACT */
-  #contact{text-align:center}
-  .contact-headline{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,8vw,100px);color:var(--white);letter-spacing:4px;line-height:.9;margin-bottom:40px}
-  .contact-headline em{font-family:'DM Serif Display',serif;font-style:italic;color:var(--gold)}
-  .contact-sub{color:var(--muted);font-size:13px;max-width:460px;margin:0 auto 48px;line-height:1.9}
-  .contact-links{display:flex;justify-content:center;gap:48px;flex-wrap:wrap}
-  .contact-link{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;transition:color .3s;display:flex;align-items:center;gap:10px}
-  .contact-link::before{content:'';width:24px;height:1px;background:currentColor}
-  .contact-link:hover{color:var(--gold)}
-
-  footer{position:relative;z-index:1;border-top:1px solid #1a1a1a;padding:32px 48px;display:flex;justify-content:space-between;align-items:center}
-  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:4px;color:var(--gold-dim)}
-  .footer-copy{font-size:10px;color:var(--muted);letter-spacing:1px}
-
-  .reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s ease}
-  .reveal.visible{opacity:1;transform:translateY(0)}
-
-  @media(max-width:900px){
-    nav{padding:20px 24px}
-    .nav-links{display:none}
-    .hero{padding:120px 24px 80px}
-    .hero h1{font-size:clamp(56px,14vw,100px)}
-    .stats{grid-template-columns:1fr 1fr}
-    .stat{padding:32px 24px}
-    section{padding:80px 24px}
-    .disciplines-grid,.films-grid,.edu-grid{grid-template-columns:1fr}
-    .skills-two-col{grid-template-columns:1fr;gap:48px}
-    .timeline{padding-left:32px}
-    .timeline-dot{left:-38px}
-    .waveform-bar{display:none}
-    footer{flex-direction:column;gap:12px;text-align:center}
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>George Melo — Sound Designer</title>
+  <meta name="description" content="George Melo — Sound Designer, Dialogue Editor & Mixer especializado em pós-produção de áudio." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<div class="cursor" id="cursor"></div>
-
-<svg class="wave-bg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-  <polyline points="0,450 40,380 80,470 120,320 160,490 200,360 240,500 280,300 320,460 360,420 400,500 440,350 480,480 520,310 560,490 600,400 640,470 680,320 720,500 760,380 800,460 840,330 880,490 920,360 960,510 1000,290 1040,480 1080,400 1120,500 1160,340 1200,470 1240,310 1280,500 1320,380 1360,460 1400,340 1440,490" fill="none" stroke="#c8a96e" stroke-width="1.5"/>
-</svg>
-
-<!-- NAV -->
-<nav>
-  <a class="nav-logo" href="#">GNM</a>
-  <div class="nav-right">
-    <ul class="nav-links">
-      <li><a href="#timelapse"   data-pt="Processo"  data-en="Process">Processo</a></li>
-      <li><a href="#disciplines" data-pt="Ofício"    data-en="Craft">Ofício</a></li>
-      <li><a href="#films"       data-pt="Filmes"    data-en="Films">Filmes</a></li>
-      <li><a href="#podcast"     data-pt="Podcast"   data-en="Podcast">Podcast</a></li>
-      <li><a href="#education"   data-pt="Formação"  data-en="Education">Formação</a></li>
-      <li><a href="#contact"     data-pt="Contato"   data-en="Contact">Contato</a></li>
-    </ul>
-    <div class="lang-toggle">
-      <button class="lang-btn active" id="btn-pt" onclick="setLang('pt')"><span class="flag">🇧🇷</span> PT</button>
-      <button class="lang-btn" id="btn-en" onclick="setLang('en')"><span class="flag">🇺🇸</span> EN</button>
+  <!-- NAV -->
+  <nav class="nav">
+    <span class="nav-logo">GM</span>
+    <div class="nav-right">
+      <a href="#projetos" class="nav-link" data-pt="Projetos" data-en="Work">Projetos</a>
+      <a href="#podcast" class="nav-link" data-pt="Podcast" data-en="Podcast">Podcast</a>
+      <a href="#sobre" class="nav-link" data-pt="Sobre" data-en="About">Sobre</a>
+      <a href="#contato" class="nav-link" data-pt="Contato" data-en="Contact">Contato</a>
+      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">EN</button>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- HERO -->
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow" data-pt="Designer de Som" data-en="Sound Designer">Designer de Som</div>
-    <h1 data-pt="Construindo <em>mundos</em><br>a partir do silêncio." data-en="Building <em>worlds</em><br>from silence.">Construindo <em>mundos</em><br>a partir do silêncio.</h1>
-    <p class="hero-sub"
-       data-pt="Das texturas invisíveis de sons inventados à imersão total do 5.1 — construo a alma sonora das histórias. Curtas-metragens, drama de áudio, tratamento de diálogos e universos sonoros que não existem até eu criá-los."
-       data-en="From the invisible textures of invented sounds to the full immersion of 5.1 surround — I craft the audio soul of stories. Short films, audio drama, dialogue treatment, and sonic universes that don't exist until I build them.">
-      Das texturas invisíveis de sons inventados à imersão total do 5.1 — construo a alma sonora das histórias. Curtas-metragens, drama de áudio, tratamento de diálogos e universos sonoros que não existem até eu criá-los.
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-label">
+        <span class="waveform-icon" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </span>
+        <span data-pt="Pós-produção de áudio" data-en="Audio post-production">Pós-produção de áudio</span>
+      </div>
+      <h1 class="hero-name">George<br>Melo</h1>
+      <div class="hero-roles">
+        <span data-pt="Sound Designer" data-en="Sound Designer">Sound Designer</span>
+        <span class="divider">·</span>
+        <span data-pt="Editor de Diálogo" data-en="Dialogue Editor">Editor de Diálogo</span>
+        <span class="divider">·</span>
+        <span data-pt="Mixagem" data-en="Mixer">Mixagem</span>
+      </div>
+      <p class="hero-bio" data-pt="Trabalho com a matéria-prima do som — construindo paisagens sonoras, editando diálogos, moldando experiências auditivas que existem antes que qualquer imagem faça sentido." data-en="I work with the raw material of sound — building soundscapes, editing dialogue, shaping auditory experiences that exist before any image makes sense.">
+        Trabalho com a matéria-prima do som — construindo paisagens sonoras, editando diálogos, moldando experiências auditivas que existem antes que qualquer imagem faça sentido.
+      </p>
+      <a href="#contato" class="hero-cta" data-pt="Falar sobre um projeto" data-en="Talk about a project">Falar sobre um projeto</a>
+    </div>
+    <div class="hero-scroll-hint" aria-hidden="true">
+      <span class="scroll-line"></span>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section" id="projetos">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title" data-pt="Trabalhos" data-en="Work">Trabalhos</h2>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project 1 -->
+      <article class="project">
+        <div class="project-meta">
+          <span class="project-index">001</span>
+          <span class="project-tag" data-pt="Mixagem" data-en="Mixing">Mixagem</span>
+        </div>
+        <h3 class="project-title" data-pt="Timelapse de Mixagem" data-en="Mixing Timelapse">Timelapse de Mixagem</h3>
+        <p class="project-client">NML Podcast</p>
+        <p class="project-desc" data-pt="13 horas de sessão de mixagem comprimidas em 4 minutos. Cada camada, cada ajuste, cada decisão — visível." data-en="13 hours of a mixing session compressed into 4 minutes. Every layer, every adjustment, every decision — visible.">
+          13 horas de sessão de mixagem comprimidas em 4 minutos. Cada camada, cada ajuste, cada decisão — visível.
+        </p>
+        <div class="video-trigger" data-src="https://player.vimeo.com/video/989617160?autoplay=1">
+          <div class="video-thumb-placeholder">
+            <div class="play-icon" aria-label="Reproduzir vídeo">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            </div>
+            <span class="video-hint" data-pt="Clique para carregar" data-en="Click to load">Clique para carregar</span>
+          </div>
+        </div>
+        <div class="video-embed hidden">
+          <iframe src="" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Timelapse de Mixagem — NML Podcast"></iframe>
+        </div>
+        <div class="project-tools">
+          <span>Reaper</span><span>FabFilter</span><span>iZotope</span>
+        </div>
+      </article>
+
+      <!-- Project 2 -->
+      <article class="project">
+        <div class="project-meta">
+          <span class="project-index">002</span>
+          <span class="project-tag" data-pt="Design de Som" data-en="Sound Design">Design de Som</span>
+        </div>
+        <h3 class="project-title" data-pt="Cena Imersiva" data-en="Immersive Scene">Cena Imersiva</h3>
+        <p class="project-client">NML — Episódio 10</p>
+        <p class="project-desc" data-pt="Cena estendida com camadas de ambiente, FX, dehumanizador e integração de trilha — cada elemento posicionado com intenção espacial." data-en="Extended scene with layers of ambience, FX, dehumanizer and score integration — each element positioned with spatial intention.">
+          Cena estendida com camadas de ambiente, FX, dehumanizador e integração de trilha — cada elemento posicionado com intenção espacial.
+        </p>
+        <div class="video-trigger" data-src="https://player.vimeo.com/video/1186978144?autoplay=1">
+          <div class="video-thumb-placeholder">
+            <div class="play-icon" aria-label="Reproduzir vídeo">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            </div>
+            <span class="video-hint" data-pt="Clique para carregar" data-en="Click to load">Clique para carregar</span>
+          </div>
+        </div>
+        <div class="video-embed hidden">
+          <iframe src="" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Cena Imersiva — NML Ep. 10"></iframe>
+        </div>
+        <div class="project-tools">
+          <span>DearVR</span><span>iZotope RX</span><span>Fairlight</span>
+        </div>
+      </article>
+
+      <!-- Project 3 -->
+      <article class="project project--wide">
+        <div class="project-meta">
+          <span class="project-index">003</span>
+          <span class="project-tag" data-pt="Edição de Diálogo" data-en="Dialogue Editing">Edição de Diálogo</span>
+        </div>
+        <h3 class="project-title" data-pt="Tratamento de Diálogo" data-en="Dialogue Treatment">Tratamento de Diálogo</h3>
+        <p class="project-client">Mobília</p>
+        <p class="project-desc" data-pt="A progressão do áudio bruto ao resultado final — o processo tornado visível. Cada decisão de limpeza e restauração de voz documentada." data-en="The progression from raw audio to the final result — the process made visible. Every cleaning and voice restoration decision documented.">
+          A progressão do áudio bruto ao resultado final — o processo tornado visível. Cada decisão de limpeza e restauração de voz documentada.
+        </p>
+        <div class="video-trigger" data-src="https://player.vimeo.com/video/1186978139?autoplay=1">
+          <div class="video-thumb-placeholder">
+            <div class="play-icon" aria-label="Reproduzir vídeo">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="5,3 19,12 5,21" fill="currentColor"/></svg>
+            </div>
+            <span class="video-hint" data-pt="Clique para carregar" data-en="Click to load">Clique para carregar</span>
+          </div>
+        </div>
+        <div class="video-embed hidden">
+          <iframe src="" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen title="Tratamento de Diálogo — Mobília"></iframe>
+        </div>
+        <div class="project-tools">
+          <span>iZotope RX</span><span>Nectar</span><span>Reaper</span><span>FabFilter</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- PODCAST -->
+  <section class="section section--dark" id="podcast">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title" data-pt="Podcast" data-en="Podcast">Podcast</h2>
+    </div>
+    <p class="section-intro" data-pt="Episódios do NML — design de som, edição e mixagem de cada conversa." data-en="NML episodes — sound design, editing and mixing of each conversation.">
+      Episódios do NML — design de som, edição e mixagem de cada conversa.
     </p>
-    <div class="hero-cta">
-      <a href="#timelapse" class="btn-primary" data-pt="Ver Meu Trabalho" data-en="View My Work">Ver Meu Trabalho</a>
-      <a href="#contact"   class="btn-ghost"   data-pt="→ Entre em contato" data-en="→ Get in touch">→ Entre em contato</a>
-    </div>
-  </div>
-  <div class="waveform-bar" id="wavebars"></div>
-</header>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat reveal">
-    <span class="stat-number">60+</span>
-    <span class="stat-label" data-pt="Episódios de Audio Drama" data-en="Audio Drama Episodes">Episódios de Audio Drama</span>
-  </div>
-  <div class="stat reveal" style="transition-delay:.1s">
-    <span class="stat-number">2</span>
-    <span class="stat-label" data-pt="Graduações em Cinema" data-en="Cinema Degrees">Graduações em Cinema</span>
-  </div>
-  <div class="stat reveal" style="transition-delay:.2s">
-    <span class="stat-number">5.1</span>
-    <span class="stat-label" data-pt="Mixagem Surround" data-en="Surround Sound Mixing">Mixagem Surround</span>
-  </div>
-  <div class="stat reveal" style="transition-delay:.3s">
-    <span class="stat-number">∞</span>
-    <span class="stat-label" data-pt="Sons Inventados" data-en="Sounds Invented">Sons Inventados</span>
-  </div>
-</div>
+    <div class="podcast-list">
 
-<!-- TIMELAPSE -->
-<section id="timelapse">
-  <div class="section-header reveal">
-    <span class="section-num">00</span>
-    <h2 class="section-title" data-pt="O Processo" data-en="The Process">O Processo</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="reveal">
-    <div class="video-container">
-      <iframe src="https://player.vimeo.com/video/989617160?badge=0&autopause=0&player_id=0&app_id=58479"
-              allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
-              title="Workflow Timelapse"></iframe>
-    </div>
-    <p class="video-caption"
-       data-pt="Timelapse — pipeline completo de um episódio de audio drama, do zero ao master final."
-       data-en="Timelapse — complete pipeline of a full audio drama episode, from scratch to final master.">
-      Timelapse — pipeline completo de um episódio de audio drama, do zero ao master final.
-    </p>
-  </div>
-</section>
-
-<!-- DISCIPLINES -->
-<section id="disciplines">
-  <div class="section-header reveal">
-    <span class="section-num">01</span>
-    <h2 class="section-title" data-pt="O Ofício" data-en="The Craft">O Ofício</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="disciplines-grid">
-    <div class="discipline-card reveal">
-      <span class="disc-num">01</span><span class="disc-icon">🎙</span>
-      <h3 class="disc-title" data-pt="Tratamento de Diálogos" data-en="Dialogue Treatment">Tratamento de Diálogos</h3>
-      <p class="disc-desc" data-pt="Limpeza, modelagem e vida para a palavra falada. Cada linha uma performance sonora — inteligível, emotiva e fiel ao espaço em que habita." data-en="Cleaning, shaping, and breathing life into spoken word. Every line a sonic performance — intelligible, emotive, and true to the space it inhabits.">Limpeza, modelagem e vida para a palavra falada. Cada linha uma performance sonora — inteligível, emotiva e fiel ao espaço em que habita.</p>
-      <span class="disc-tag">ADR · Edição · Processamento</span>
-    </div>
-    <div class="discipline-card reveal" style="transition-delay:.1s">
-      <span class="disc-num">02</span><span class="disc-icon">✂️</span>
-      <h3 class="disc-title" data-pt="Edição de Som" data-en="Sound Editing">Edição de Som</h3>
-      <p class="disc-desc" data-pt="Montagem precisa de cada camada — ambientes, efeitos, foley e atmosferas — para construir uma realidade sonora coerente e imersiva, quadro a quadro." data-en="Precision assembly of every audio layer — ambiences, hard effects, foley, and atmospheres — to build a coherent and immersive sonic reality frame by frame.">Montagem precisa de cada camada — ambientes, efeitos, foley e atmosferas — para construir uma realidade sonora coerente e imersiva, quadro a quadro.</p>
-      <span class="disc-tag">SFX · Foley · Sync</span>
-    </div>
-    <div class="discipline-card reveal" style="transition-delay:.2s">
-      <span class="disc-num">03</span><span class="disc-icon">🔬</span>
-      <h3 class="disc-title" data-pt="Design de Som & Invenção" data-en="Sound Design & Invention">Design de Som & Invenção</h3>
-      <p class="disc-desc" data-pt="Criação de sons que não existem na natureza. Síntese, camadas e escultura sonora para criar o impossível — criaturas, máquinas, mundos." data-en="Creating sounds that don't exist in nature. Synthesizing, layering, and sculpting audio from raw material to create the impossible — creatures, machines, worlds.">Criação de sons que não existem na natureza. Síntese, camadas e escultura sonora para criar o impossível — criaturas, máquinas, mundos.</p>
-      <span class="disc-tag">Síntese · Layering · FX Design</span>
-    </div>
-    <div class="discipline-card reveal" style="transition-delay:.3s">
-      <span class="disc-num">04</span><span class="disc-icon">🎚</span>
-      <h3 class="disc-title" data-pt="Mixagem — 2.0 & 5.1" data-en="Mixing — 2.0 & 5.1">Mixagem — 2.0 & 5.1</h3>
-      <p class="disc-desc" data-pt="Mix final em estéreo e surround. Cada elemento equilibrado, posicionado e assentado em seu espaço acústico. De 2.0 para broadcast ao 5.1 cinematográfico." data-en="Final mix in stereo and surround. Every element balanced, panned, and seated in its acoustic space. From broadcast-ready 2.0 to cinematic 5.1 immersion.">Mix final em estéreo e surround. Cada elemento equilibrado, posicionado e assentado em seu espaço acústico. De 2.0 para broadcast ao 5.1 cinematográfico.</p>
-      <span class="disc-tag">Estéreo · Surround · Cinema</span>
-    </div>
-    <div class="discipline-card reveal" style="transition-delay:.4s">
-      <span class="disc-num">05</span><span class="disc-icon">🎧</span>
-      <h3 class="disc-title" data-pt="Produção de Audio Drama" data-en="Audio Drama Production">Produção de Audio Drama</h3>
-      <p class="disc-desc" data-pt="Mais de 60 episódios de audio drama — da gravação ao master. Narrativas que vivem inteiramente no som, onde cada escolha sonora É a história." data-en="Over 60 audio drama episodes — from recording to final master. Storytelling that lives entirely in sound, where every sonic choice IS the narrative.">Mais de 60 episódios de audio drama — da gravação ao master. Narrativas que vivem inteiramente no som, onde cada escolha sonora É a história.</p>
-      <span class="disc-tag">Podcast · Drama · Produção</span>
-    </div>
-    <div class="discipline-card reveal" style="transition-delay:.5s">
-      <span class="disc-num">06</span><span class="disc-icon">🎬</span>
-      <h3 class="disc-title" data-pt="Pós-produção em Curtas" data-en="Short Film Audio Post">Pós-produção em Curtas</h3>
-      <p class="disc-desc" data-pt="Pipeline completo de pós-produção de áudio para curtas narrativos — da spotting session às entregas finais. Em colaboração com diretores para realizar sua visão sonora." data-en="Full post-production audio pipeline for narrative short films — from spotting session to deliverables. Collaborating with directors to realize their sonic vision.">Pipeline completo de pós-produção de áudio para curtas narrativos — da spotting session às entregas finais. Em colaboração com diretores para realizar sua visão sonora.</p>
-      <span class="disc-tag">Pós-produção · Filme · Narrativa</span>
-    </div>
-  </div>
-</section>
-
-<!-- FILMS -->
-<section id="films">
-  <div class="section-header reveal">
-    <span class="section-num">02</span>
-    <h2 class="section-title" data-pt="Curtas-metragens" data-en="Short Films">Curtas-metragens</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="films-grid">
-
-    <div class="film-card reveal">
-      <div class="film-embed">
-        <iframe src="https://www.youtube.com/embed/1pjKIqkFPAs?si=c_Ia04XfE9SChNC6" title="Lenilson Braga: O Príncipe do Brega" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <div class="podcast-item">
+        <div class="podcast-header" aria-expanded="false" role="button" tabindex="0">
+          <div class="podcast-info">
+            <span class="podcast-num">Ep. 18</span>
+            <span class="podcast-arrow" aria-hidden="true">+</span>
+          </div>
+        </div>
+        <div class="podcast-player" aria-hidden="true">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/7v37Azx0YZOzwY3ZMUkgqJ" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
       </div>
-      <div class="film-info">
-        <div class="film-title">Lenilson Braga: O Príncipe do Brega</div>
-        <div class="film-role" data-pt="Montagem · Edição de Diálogos · Mixagem 2.0 · Correção de Cor" data-en="Editing · Dialogue Edit · 2.0 Mix · Color Grading">Montagem · Edição de Diálogos · Mixagem 2.0 · Correção de Cor</div>
-        <div class="film-desc"
-             data-pt="Documentário contemplativo aprovado pelo Edital LAB PE / Lei Aldir Blanc. Através do olhar do filho, o filme revela a história e o legado cultural de Lenilson Braga — o Sítio de Braga, reduto de natureza, festas e arte no coração da Várzea, Recife. Gravado no auge da pandemia de Covid-19."
-             data-en="A contemplative documentary selected by the LAB PE / Lei Aldir Blanc grant. Seen through his son's eyes, the film uncovers the history and cultural legacy of Lenilson Braga — the Sítio de Braga, a sanctuary of nature, music and community in the heart of Várzea, Recife. Shot at the height of the Covid-19 pandemic.">
-          Documentário contemplativo aprovado pelo Edital LAB PE / Lei Aldir Blanc. Através do olhar do filho, o filme revela a história e o legado cultural de Lenilson Braga — o Sítio de Braga, reduto de natureza, festas e arte no coração da Várzea, Recife. Gravado no auge da pandemia de Covid-19.
+
+      <div class="podcast-item">
+        <div class="podcast-header" aria-expanded="false" role="button" tabindex="0">
+          <div class="podcast-info">
+            <span class="podcast-num">Ep. 19</span>
+            <span class="podcast-arrow" aria-hidden="true">+</span>
+          </div>
+        </div>
+        <div class="podcast-player" aria-hidden="true">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/5BUpVxiwVRlsMdhxe8S7I6" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="podcast-item">
+        <div class="podcast-header" aria-expanded="false" role="button" tabindex="0">
+          <div class="podcast-info">
+            <span class="podcast-num">Ep. 04</span>
+            <span class="podcast-arrow" aria-hidden="true">+</span>
+          </div>
+        </div>
+        <div class="podcast-player" aria-hidden="true">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/6XPq3MjhQQ6Ggx3zyJfv5a" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="podcast-item">
+        <div class="podcast-header" aria-expanded="false" role="button" tabindex="0">
+          <div class="podcast-info">
+            <span class="podcast-num">Ep. 10</span>
+            <span class="podcast-arrow" aria-hidden="true">+</span>
+          </div>
+        </div>
+        <div class="podcast-player" aria-hidden="true">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/1GruVCiB3ov61nTpC6R1aq" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="podcast-item">
+        <div class="podcast-header" aria-expanded="false" role="button" tabindex="0">
+          <div class="podcast-info">
+            <span class="podcast-num">Ep. 16</span>
+            <span class="podcast-arrow" aria-hidden="true">+</span>
+          </div>
+        </div>
+        <div class="podcast-player" aria-hidden="true">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/episode/0O3COQrmfVcECfe2mvMOZe" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="sobre">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title" data-pt="Sobre" data-en="About">Sobre</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="about-lead" data-pt="Trabalho com som desde que entendi que o silêncio também é uma escolha." data-en="I've worked with sound since I understood that silence is also a choice.">
+          Trabalho com som desde que entendi que o silêncio também é uma escolha.
+        </p>
+        <p data-pt="Sou sound designer, editor de diálogo e mixer baseado em Recife. Minha prática se construiu entre o cinema e o jornalismo — duas linguagens que me ensinaram a ouvir antes de falar." data-en="I'm a sound designer, dialogue editor and mixer based in Recife. My practice was built between cinema and journalism — two languages that taught me to listen before speaking.">
+          Sou sound designer, editor de diálogo e mixer baseado em Recife. Minha prática se construiu entre o cinema e o jornalismo — duas linguagens que me ensinaram a ouvir antes de falar.
+        </p>
+        <p data-pt="Cada projeto começa com uma pergunta: o que esse som precisa fazer? Não decorar — comunicar." data-en="Every project starts with a question: what does this sound need to do? Not decorate — communicate.">
+          Cada projeto começa com uma pergunta: o que esse som precisa fazer? Não decorar — comunicar.
+        </p>
+      </div>
+
+      <div class="about-details">
+        <div class="about-block">
+          <h4 class="about-block-title" data-pt="Formação" data-en="Education">Formação</h4>
+          <ul class="edu-list">
+            <li>
+              <span class="edu-year">2010</span>
+              <span>
+                <span data-pt="Comunicação Social" data-en="Social Communication">Comunicação Social</span><br>
+                <span class="edu-school">Faculdade Maurício de Nassau</span>
+              </span>
+            </li>
+            <li>
+              <span class="edu-year">2018</span>
+              <span>
+                <span data-pt="Cinema" data-en="Cinema">Cinema</span><br>
+                <span class="edu-school">Universidade Federal de Pernambuco</span>
+              </span>
+            </li>
+            <li>
+              <span class="edu-year">2024</span>
+              <span>
+                <span data-pt="Mapping, Texturização & Sound Design" data-en="Mapping, Texturing & Sound Design">Mapping, Texturização & Sound Design</span><br>
+                <span class="edu-school">SAGA</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="about-block">
+          <h4 class="about-block-title" data-pt="Ferramentas" data-en="Tools">Ferramentas</h4>
+          <div class="tools-prose" data-pt="Reaper como ambiente principal. Fairlight quando o projeto exige. iZotope RX e Nectar para restauração e tratamento de voz. FabFilter para dinâmica e EQ. DearVR para posicionamento espacial." data-en="Reaper as primary environment. Fairlight when the project demands it. iZotope RX and Nectar for restoration and voice treatment. FabFilter for dynamics and EQ. DearVR for spatial positioning.">
+            Reaper como ambiente principal. Fairlight quando o projeto exige. iZotope RX e Nectar para restauração e tratamento de voz. FabFilter para dinâmica e EQ. DearVR para posicionamento espacial.
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
-    <div class="film-card reveal" style="transition-delay:.15s">
-      <div class="film-embed">
-        <iframe src="https://www.youtube.com/embed/_QcA58NuWd4?si=Is0ujZRXqQs0BRcm" title="Fogos de Artifício" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="film-info">
-        <div class="film-title">Fogos de Artifício</div>
-        <div class="film-role" data-pt="Montagem · FX · Mixagem 2.0 · Correção de Cor" data-en="Editing · FX · 2.0 Mix · Color Grading">Montagem · FX · Mixagem 2.0 · Correção de Cor</div>
-        <div class="film-desc"
-             data-pt="Drama/suspense. O desconhecido e a falta de comunicação entre o casal Rogério e Zefa geram interpretações subjetivas e fantasiosas que transformam por completo a rotina de ambos."
-             data-en="Drama/suspense. The unknown and a breakdown of communication between couple Rogério and Zefa spark subjective, fantastical interpretations that completely upend their everyday life.">
-          Drama/suspense. O desconhecido e a falta de comunicação entre o casal Rogério e Zefa geram interpretações subjetivas e fantasiosas que transformam por completo a rotina de ambos.
-        </div>
-      </div>
+  <!-- CONTACT -->
+  <section class="section section--contact" id="contato">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title" data-pt="Contato" data-en="Contact">Contato</h2>
     </div>
 
-    <div class="film-card reveal" style="transition-delay:.3s">
-      <div class="film-embed">
-        <iframe src="https://www.youtube.com/embed/7vz5ifiaF-8?si=RzI_TpfWG0hURSy8" title="Mudança" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="film-info">
-        <div class="film-title">Mudança</div>
-        <div class="film-role" data-pt="Mixagem 2.0 · Edição de Som" data-en="2.0 Mix · Sound Editing">Mixagem 2.0 · Edição de Som</div>
-        <div class="film-desc"
-             data-pt="Curta-metragem animado sobre racismo religioso, criado para o público jovem como ferramenta de debate e conscientização. O filme aborda de forma direta como gestos simples podem combater a intolerância e proteger quem sofre violência por sua crença."
-             data-en="Animated short on religious racism, designed for young audiences as a tool for debate and awareness. The film addresses directly how small acts of solidarity can combat intolerance and protect those who face violence for their beliefs.">
-          Curta-metragem animado sobre racismo religioso, criado para o público jovem como ferramenta de debate e conscientização. O filme aborda de forma direta como gestos simples podem combater a intolerância e proteger quem sofre violência por sua crença.
-        </div>
-      </div>
-    </div>
+    <div class="contact-inner">
+      <p class="contact-lead" data-pt="Tem um projeto que precisa de som? Vamos conversar." data-en="Have a project that needs sound? Let's talk.">
+        Tem um projeto que precisa de som? Vamos conversar.
+      </p>
 
-    <div class="film-card reveal" style="transition-delay:.45s">
-      <div class="film-embed">
-        <iframe src="https://www.youtube.com/embed/Fui7YyBE2Co?si=S044UXAC97y2eJa9" title="Mobília" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <div class="film-info">
-        <div class="film-title">Mobília</div>
-        <div class="film-role" data-pt="Mixagem 5.1 · Edição de Diálogos · Montagem · Correção de Cor" data-en="5.1 Mix · Dialogue Editing · Editing · Color Grading">Mixagem 5.1 · Edição de Diálogos · Montagem · Correção de Cor</div>
-        <div class="film-desc"
-             data-pt="Well Bravo | Brasil | 2024 | 23' | DCP | 16+ — Um apartamento. As energias plasmadas naquele ambiente reverberam e influenciam o relacionamento de Júlia e Caio."
-             data-en="Well Bravo | Brazil | 2024 | 23' | DCP | 16+ — An apartment. The energies embedded in that space reverberate and shape the relationship between Júlia and Caio.">
-          Well Bravo | Brasil | 2024 | 23' | DCP | 16+ — Um apartamento. As energias plasmadas naquele ambiente reverberam e influenciam o relacionamento de Júlia e Caio.
-        </div>
+      <div class="contact-links">
+        <a href="mailto:george.melo@proton.me" class="contact-link">
+          <span class="contact-link-label" data-pt="Email" data-en="Email">Email</span>
+          <span class="contact-link-value">george.melo@proton.me</span>
+        </a>
+        <a href="https://wa.me/5581984855028" target="_blank" rel="noopener" class="contact-link contact-link--wa">
+          <span class="contact-link-label">WhatsApp</span>
+          <span class="contact-link-value">+55 81 98485-5028</span>
+        </a>
+        <a href="https://www.linkedin.com/in/george-nogueira-de-melo-1a5a78235" target="_blank" rel="noopener" class="contact-link">
+          <span class="contact-link-label">LinkedIn</span>
+          <span class="contact-link-value">george-nogueira-de-melo</span>
+        </a>
       </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <footer class="footer">
+    <span>© <span id="year"></span> George Melo</span>
+    <span data-pt="Sound Designer · Recife, BR" data-en="Sound Designer · Recife, BR">Sound Designer · Recife, BR</span>
+  </footer>
 
-<!-- PODCAST -->
-<section id="podcast">
-  <div class="section-header reveal">
-    <span class="section-num">03</span>
-    <h2 class="section-title" data-pt="Audio Drama" data-en="Audio Drama">Audio Drama</h2>
-    <div class="section-line"></div>
-  </div>
-  <p class="podcast-intro reveal"
-     data-pt="Novo Mundo Livre — mais de 60 episódios produzidos, da concepção sonora ao master final. Uma seleção dos episódios de destaque disponíveis no Spotify."
-     data-en="Novo Mundo Livre — over 60 produced episodes, from sonic conception to final master. A selection of standout episodes available on Spotify.">
-    Novo Mundo Livre — mais de 60 episódios produzidos, da concepção sonora ao master final. Uma seleção dos episódios de destaque disponíveis no Spotify.
-  </p>
-  <div class="podcast-grid">
-    <div class="podcast-item reveal">
-      <div class="podcast-label" data-pt="Episódio 18" data-en="Episode 18">Episódio 18</div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/7v37Azx0YZOzwY3ZMUkgqJ?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="podcast-item reveal" style="transition-delay:.08s">
-      <div class="podcast-label" data-pt="Episódio 19" data-en="Episode 19">Episódio 19</div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/5BUpVxiwVRlsMdhxe8S7I6?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="podcast-item reveal" style="transition-delay:.16s">
-      <div class="podcast-label" data-pt="Episódio 4" data-en="Episode 4">Episódio 4</div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/6XPq3MjhQQ6Ggx3zyJfv5a?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="podcast-item reveal" style="transition-delay:.24s">
-      <div class="podcast-label" data-pt="Episódio 10" data-en="Episode 10">Episódio 10</div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/1GruVCiB3ov61nTpC6R1aq?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-    <div class="podcast-item reveal" style="transition-delay:.32s">
-      <div class="podcast-label" data-pt="Episódio 16" data-en="Episode 16">Episódio 16</div>
-      <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/episode/0O3COQrmfVcECfe2mvMOZe?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    </div>
-  </div>
-</section>
-
-<!-- WORK TIMELINE -->
-<section id="work">
-  <div class="section-header reveal">
-    <span class="section-num">04</span>
-    <h2 class="section-title" data-pt="Créditos Selecionados" data-en="Selected Credits">Créditos Selecionados</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="timeline">
-    <div class="timeline-item reveal">
-      <div class="timeline-dot"></div>
-      <div class="timeline-meta" data-pt="Podcast · Audio Drama" data-en="Podcast · Audio Drama">Podcast · Audio Drama</div>
-      <h3 class="timeline-title">Novo Mundo Livre</h3>
-      <div class="timeline-role" data-pt="Designer de Som · Editor · Mixer" data-en="Sound Designer · Editor · Mixer">Designer de Som · Editor · Mixer</div>
-      <p class="timeline-desc" data-pt="60+ episódios de audio drama narrativo. Pipeline completo: supervisão de gravação, design de som, integração musical e mix final 2.0 para distribuição." data-en="60+ episodes of narrative audio drama. Full pipeline: recording supervision, sound design, music integration, and final 2.0 mix for distribution.">60+ episódios de audio drama narrativo. Pipeline completo: supervisão de gravação, design de som, integração musical e mix final 2.0 para distribuição.</p>
-      <div class="timeline-tags"><span class="tag">Podcast</span><span class="tag">Audio Drama</span><span class="tag">Mix 2.0</span><span class="tag">60+ Ep.</span></div>
-    </div>
-    <div class="timeline-item reveal">
-      <div class="timeline-dot"></div>
-      <div class="timeline-meta" data-pt="Curta-metragem · 2024" data-en="Short Film · 2024">Curta-metragem · 2024</div>
-      <h3 class="timeline-title">Mobília</h3>
-      <div class="timeline-role" data-pt="Mixagem 5.1 · Edição de Diálogos · Montagem · Cor" data-en="5.1 Mix · Dialogue Edit · Editing · Color">Mixagem 5.1 · Edição de Diálogos · Montagem · Cor</div>
-      <p class="timeline-desc" data-pt="Curta-metragem de ficção em DCP com mixagem 5.1 surround. Well Bravo | 23' | Classificação 16+." data-en="Fiction short on DCP with 5.1 surround mix. Well Bravo | 23' | 16+ rating.">Curta-metragem de ficção em DCP com mixagem 5.1 surround. Well Bravo | 23' | Classificação 16+.</p>
-      <div class="timeline-tags"><span class="tag">5.1 Surround</span><span class="tag">DCP</span><span class="tag">Ficção</span><span class="tag">2024</span></div>
-    </div>
-    <div class="timeline-item reveal">
-      <div class="timeline-dot"></div>
-      <div class="timeline-meta" data-pt="Documentário · Lei Aldir Blanc" data-en="Documentary · Lei Aldir Blanc">Documentário · Lei Aldir Blanc</div>
-      <h3 class="timeline-title">Lenilson Braga: O Príncipe do Brega</h3>
-      <div class="timeline-role" data-pt="Montagem · Diálogos · Mixagem 2.0 · Cor" data-en="Editing · Dialogue · 2.0 Mix · Color">Montagem · Diálogos · Mixagem 2.0 · Cor</div>
-      <p class="timeline-desc" data-pt="Documentário aprovado pelo Edital LAB PE / Lei Aldir Blanc 2020. Gravado no auge da pandemia de Covid-19." data-en="Documentary selected by the LAB PE / Lei Aldir Blanc 2020 grant. Shot at the height of the Covid-19 pandemic.">Documentário aprovado pelo Edital LAB PE / Lei Aldir Blanc 2020. Gravado no auge da pandemia de Covid-19.</p>
-      <div class="timeline-tags"><span class="tag">Documentário</span><span class="tag">Mix 2.0</span><span class="tag">Edital Público</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- EDUCATION -->
-<section id="education">
-  <div class="section-header reveal">
-    <span class="section-num">05</span>
-    <h2 class="section-title" data-pt="Formação" data-en="Education">Formação</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="edu-grid">
-    <div class="edu-card reveal">
-      <div class="edu-degree" data-pt="Bacharelado" data-en="Bachelor's Degree">Bacharelado</div>
-      <div class="edu-title" data-pt="Comunicação Social" data-en="Social Communication">Comunicação Social</div>
-      <div class="edu-institution">Faculdade Maurício de Nassau</div>
-      <div class="edu-detail">2010</div>
-    </div>
-    <div class="edu-card reveal" style="transition-delay:.12s">
-      <div class="edu-degree" data-pt="Bacharelado" data-en="Bachelor's Degree">Bacharelado</div>
-      <div class="edu-title" data-pt="Cinema" data-en="Cinema">Cinema</div>
-      <div class="edu-institution" data-pt="Universidade Federal de Pernambuco" data-en="Federal University of Pernambuco">Universidade Federal de Pernambuco</div>
-      <div class="edu-detail">UFPE · 2018</div>
-    </div>
-    <div class="edu-card reveal" style="transition-delay:.24s">
-      <div class="edu-degree" data-pt="Curso de Especialização · 2024" data-en="Specialization Course · 2024">Curso de Especialização · 2024</div>
-      <div class="edu-title" data-pt="Mapeamento, Textura e Desenho Sonoro" data-en="Mapping, Texture & Sound Design">Mapeamento, Textura e Desenho Sonoro</div>
-      <div class="edu-institution">SAGA — School of Arts, Games and Animation</div>
-      <div class="edu-detail" data-pt="Sound Design Avançado" data-en="Advanced Sound Design">Sound Design Avançado</div>
-    </div>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-header reveal">
-    <span class="section-num">06</span>
-    <h2 class="section-title" data-pt="Habilidades & Ferramentas" data-en="Skills & Tools">Habilidades & Ferramentas</h2>
-    <div class="section-line"></div>
-  </div>
-  <div class="skills-two-col">
-    <div class="reveal">
-      <div class="skill-group-title" data-pt="Habilidades Técnicas" data-en="Technical Skills">Habilidades Técnicas</div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Mixagem Surround 5.1" data-en="5.1 Surround Mixing">Mixagem Surround 5.1</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:95%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Design de Som / Síntese" data-en="Sound Design / Synthesis">Design de Som / Síntese</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:95%;animation-delay:.1s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Edição e Tratamento de Diálogos" data-en="Dialogue Editing & Treatment">Edição e Tratamento de Diálogos</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:92%;animation-delay:.2s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Mixagem Estéreo 2.0" data-en="Stereo 2.0 Mixing">Mixagem Estéreo 2.0</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:90%;animation-delay:.3s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Gravação e Edição de Foley" data-en="Foley Recording & Edit">Gravação e Edição de Foley</span><span class="skill-pct" data-pt="Avançado" data-en="Advanced">Avançado</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:82%;animation-delay:.4s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Produção de Audio Drama" data-en="Audio Drama Production">Produção de Audio Drama</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:95%;animation-delay:.5s"></div></div>
-      </div>
-    </div>
-    <div class="reveal" style="transition-delay:.2s">
-      <div class="skill-group-title" data-pt="Software & Formatos" data-en="Software & Formats">Software & Formatos</div>
-      <div class="skill-item">
-        <div class="skill-label"><span>Reaper</span><span class="skill-pct" data-pt="Avançado" data-en="Advanced">Avançado</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:85%"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span>iZotope RX</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:95%;animation-delay:.1s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Processamento com Plugins" data-en="Plugin Processing">Processamento com Plugins</span><span class="skill-pct" data-pt="Avançado" data-en="Advanced">Avançado</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:85%;animation-delay:.2s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Bibliotecas de Som & SFX" data-en="Sound Libraries & SFX">Bibliotecas de Som & SFX</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:90%;animation-delay:.3s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Formatos de Entrega" data-en="Delivery Formats">Formatos de Entrega</span><span class="skill-pct">Expert</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:92%;animation-delay:.4s"></div></div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-label"><span data-pt="Broadcast" data-en="Broadcast">Broadcast</span><span class="skill-pct" data-pt="Avançado" data-en="Advanced">Avançado</span></div>
-        <div class="skill-bar"><div class="skill-bar-fill" style="width:80%;animation-delay:.5s"></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact">
-  <h2 class="contact-headline reveal"
-      data-pt="Vamos criar<br>algo <em>sonoro.</em>"
-      data-en="Let's build<br>something <em>sonic.</em>">Vamos criar<br>algo <em>sonoro.</em></h2>
-  <p class="contact-sub reveal"
-     data-pt="Procurando um colaborador que inventa mundos, não apenas mixa trilhas? Vamos conversar."
-     data-en="Looking for a collaborator who can invent worlds, not just mix tracks? Let's talk.">
-    Procurando um colaborador que inventa mundos, não apenas mixa trilhas? Vamos conversar.
-  </p>
-  <div class="contact-links reveal">
-    <a href="mailto:george.melo@proton.me" class="contact-link">george.melo@proton.me</a>
-    <a href="https://www.linkedin.com/in/george-nogueira-de-melo-1a5a78235" class="contact-link" target="_blank">LinkedIn</a>
-    <a href="https://wa.me/5581984855028" class="contact-link" target="_blank" style="display:flex;align-items:center;gap:8px;">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp
-    </a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">George Nogueira de Melo</div>
-  <div class="footer-copy" data-pt="Criado em som. Construído em código. © 2026" data-en="Crafted in sound. Built in code. © 2026">Criado em som. Construído em código. © 2026</div>
-</footer>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Cursor
-  const cursor = document.getElementById('cursor');
-  document.addEventListener('mousemove', function(e) {
-    cursor.style.left = e.clientX + 'px';
-    cursor.style.top = e.clientY + 'px';
-  });
-  document.querySelectorAll('a, button, .discipline-card, .stat, .film-card').forEach(function(el) {
-    el.addEventListener('mouseenter', function() { cursor.classList.add('big'); });
-    el.addEventListener('mouseleave', function() { cursor.classList.remove('big'); });
-  });
-
-  // Waveform bars
-  var wavebars = document.getElementById('wavebars');
-  var heights = [20,35,50,28,60,45,38,55,30,48,42,58,25,52,40,62,33,47,56,22,44,39,57,27,50,36,43];
-  heights.forEach(function(h, i) {
-    var s = document.createElement('span');
-    s.style.height = h + 'px';
-    s.style.animationDelay = (i * 0.07) + 's';
-    s.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
-    wavebars.appendChild(s);
-  });
-
-  // Scroll reveal
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) e.target.classList.add('visible');
-    });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(function(r) { observer.observe(r); });
-
-  // Language toggle
-  function setLang(lang) {
-    document.documentElement.lang = lang;
-    document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
-    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    document.querySelectorAll('[data-pt][data-en]').forEach(function(el) {
-      var val = el.getAttribute('data-' + lang);
-      if (!val) return;
-      if (el.tagName === 'H1' || el.classList.contains('contact-headline')) {
-        el.innerHTML = val;
-      } else {
-        el.textContent = val;
+  <script src="script.js"></script>
+</body>
+</html>
