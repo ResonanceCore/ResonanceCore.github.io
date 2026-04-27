@@ -109,9 +109,9 @@
   const nav = document.querySelector('.nav');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 60) {
-      nav.style.borderBottomColor = 'rgba(0,0,0,0.05)';
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.05)';
     } else {
-      nav.style.borderBottomColor = 'rgba(0,0,0,0.08)';
+      nav.style.borderBottomColor = 'rgba(255,255,255,0.07)';
     }
   }, { passive: true });
 
