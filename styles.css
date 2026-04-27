@@ -3,15 +3,15 @@
    ============================ */
 
 :root {
-  --bg: #0e0e0d;
-  --bg-dark: #080808;
-  --surface: #141413;
-  --border: rgba(255, 255, 255, 0.07);
-  --text: #e8e4dc;
-  --text-muted: #7a7570;
-  --text-faint: #3a3632;
-  --accent: #c8b89a;
-  --accent-dim: rgba(200, 184, 154, 0.15);
+  --bg: #f5f5f5;
+  --bg-dark: #eeeeec;
+  --surface: #ebebea;
+  --border: rgba(0, 0, 0, 0.08);
+  --text: #0f0f0f;
+  --text-muted: #5a5652;
+  --text-faint: #b0aca6;
+  --accent: #7a6a52;
+  --accent-dim: rgba(122, 106, 82, 0.12);
   --font-display: 'Playfair Display', Georgia, serif;
   --font-body: 'DM Sans', sans-serif;
   --font-mono: 'DM Mono', monospace;
@@ -19,7 +19,7 @@
   --space-sm: 1rem;
   --space-md: 2rem;
   --space-lg: 4rem;
-  --space-xl: 8rem;
+  --space-xl: 9rem;
   --max-w: 1200px;
   --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
@@ -40,7 +40,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-weight: 300;
-  line-height: 1.7;
+  line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -55,7 +55,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
    ============================ */
 
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
@@ -83,10 +83,10 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   justify-content: space-between;
   padding: 1.25rem 2.5rem;
-  background: rgba(14, 14, 13, 0.85);
-  backdrop-filter: blur(12px);
+  background: rgba(245, 245, 245, 0.88);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
-  transition: all 0.3s var(--ease);
+  transition: border-color 0.3s var(--ease);
 }
 
 .nav-logo {
@@ -104,11 +104,11 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
-  transition: color 0.25s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
 .nav-link:hover {
@@ -124,7 +124,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   border: 1px solid var(--border);
   padding: 0.3rem 0.65rem;
   border-radius: 2px;
-  transition: all 0.25s var(--ease);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
 }
 
 .lang-toggle:hover {
@@ -150,7 +150,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: radial-gradient(ellipse at 70% 40%, rgba(200, 184, 154, 0.04) 0%, transparent 60%);
+  background: radial-gradient(ellipse at 70% 40%, rgba(122, 106, 82, 0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 
@@ -202,7 +202,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .hero-name {
   font-family: var(--font-display);
   font-size: clamp(4rem, 12vw, 10rem);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 0.9;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -216,10 +216,10 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
   color: var(--text-muted);
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   animation: fadeUp 0.9s var(--ease) 0.35s both;
 }
 
@@ -228,8 +228,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .hero-bio {
-  max-width: 520px;
-  font-size: 1rem;
+  max-width: 480px;
+  font-size: 0.95rem;
   color: var(--text-muted);
   line-height: 1.8;
   margin-bottom: 3rem;
@@ -245,12 +245,12 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   color: var(--accent);
   border-bottom: 1px solid var(--accent);
   padding-bottom: 2px;
-  transition: opacity 0.25s var(--ease);
+  transition: opacity 0.2s var(--ease);
   animation: fadeUp 0.9s var(--ease) 0.55s both;
 }
 
 .hero-cta:hover {
-  opacity: 0.65;
+  opacity: 0.6;
 }
 
 .hero-scroll-hint {
@@ -293,7 +293,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .section--dark .section-header,
 .section--dark .section-intro,
-.section--dark .podcast-list {
+.section--dark .podcast-list,
+.section--dark .about-grid {
   max-width: var(--max-w);
   margin-left: auto;
   margin-right: auto;
@@ -324,7 +325,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .section-intro {
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   color: var(--text-muted);
   margin-bottom: var(--space-md);
   font-family: var(--font-mono);
@@ -348,7 +349,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  transition: background 0.3s var(--ease);
+  transition: background 0.25s var(--ease);
 }
 
 .project:hover {
@@ -375,7 +376,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .project-tag {
   font-family: var(--font-mono);
   font-size: 0.65rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   border: 1px solid var(--accent-dim);
@@ -385,9 +386,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .project-title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3vw, 2rem);
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  font-weight: 400;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
@@ -402,7 +403,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .project-desc {
   font-size: 0.9rem;
   color: var(--text-muted);
-  line-height: 1.75;
+  line-height: 1.8;
   max-width: 460px;
 }
 
@@ -423,42 +424,30 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   justify-content: center;
   gap: 0.75rem;
-  transition: border-color 0.25s var(--ease);
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
   overflow: hidden;
-}
-
-.video-thumb-placeholder::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 10px,
-    rgba(255,255,255,0.01) 10px,
-    rgba(255,255,255,0.01) 11px
-  );
 }
 
 .video-trigger:hover .video-thumb-placeholder {
   border-color: var(--accent);
+  background: var(--surface);
 }
 
 .play-icon {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--text-muted);
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--text-faint);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
-  transition: all 0.25s var(--ease);
+  color: var(--text-faint);
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease);
 }
 
 .play-icon svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   margin-left: 2px;
 }
 
@@ -469,7 +458,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .video-hint {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -504,10 +493,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-size: 0.62rem;
   letter-spacing: 0.08em;
   color: var(--text-faint);
-  border: 1px solid var(--text-faint);
+  border: 1px solid var(--border);
   padding: 0.15rem 0.5rem;
   border-radius: 2px;
-  opacity: 0.6;
 }
 
 /* ============================
@@ -534,11 +522,11 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   align-items: center;
   cursor: pointer;
   user-select: none;
-  transition: background 0.25s var(--ease);
+  transition: background 0.2s var(--ease);
 }
 
 .podcast-header:hover {
-  background: rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.03);
 }
 
 .podcast-info {
@@ -559,7 +547,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-family: var(--font-mono);
   font-size: 1.2rem;
   color: var(--text-faint);
-  transition: transform 0.3s var(--ease), color 0.25s var(--ease);
+  transition: transform 0.25s var(--ease), color 0.2s var(--ease);
   line-height: 1;
 }
 
@@ -591,17 +579,18 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .about-lead {
   font-family: var(--font-display);
-  font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+  font-size: clamp(1.25rem, 2.5vw, 1.8rem);
   font-style: italic;
-  line-height: 1.45;
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--text);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
 }
 
 .about-text p:not(.about-lead) {
   font-size: 0.95rem;
   color: var(--text-muted);
-  margin-bottom: 1rem;
+  margin-bottom: 1.1rem;
   line-height: 1.85;
 }
 
@@ -673,6 +662,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   font-family: var(--font-display);
   font-size: clamp(1.4rem, 3vw, 2.2rem);
   font-style: italic;
+  font-weight: 400;
   color: var(--text);
   max-width: 500px;
 }
@@ -689,7 +679,7 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   justify-content: space-between;
   padding: 1.25rem 1.5rem;
   border-bottom: 1px solid var(--border);
-  transition: background 0.25s var(--ease);
+  transition: background 0.2s var(--ease);
 }
 
 .contact-link:last-child {
@@ -713,11 +703,10 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .contact-link-value {
-  font-size: 0.9rem;
-  color: var(--text-muted);
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  transition: color 0.25s var(--ease);
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
 }
 
 .contact-link:hover .contact-link-value {
@@ -746,8 +735,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .fade-in {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+  transform: translateY(16px);
+  transition: opacity 0.65s var(--ease), transform 0.65s var(--ease);
 }
 
 .fade-in.visible {

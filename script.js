@@ -17,7 +17,9 @@
 
     document.querySelectorAll('[data-pt]').forEach(el => {
       const text = lang === 'pt' ? el.dataset.pt : el.dataset.en;
-      if (text !== undefined) {
+      if (text === undefined) return;
+      // Only update if element has no child elements
+      if (el.children.length === 0) {
         el.textContent = text;
       }
     });
@@ -92,7 +94,6 @@
     { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
   );
 
-  // Observe sections and projects
   document.querySelectorAll(
     '.project, .about-text, .about-details, .contact-inner, .podcast-list, .section-intro'
   ).forEach(el => {
@@ -108,9 +109,9 @@
   const nav = document.querySelector('.nav');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 60) {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.05)';
+      nav.style.borderBottomColor = 'rgba(0,0,0,0.05)';
     } else {
-      nav.style.borderBottomColor = 'rgba(255,255,255,0.07)';
+      nav.style.borderBottomColor = 'rgba(0,0,0,0.08)';
     }
   }, { passive: true });
 
