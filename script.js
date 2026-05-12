@@ -17,7 +17,6 @@
 
     document.querySelectorAll('[data-pt]').forEach(el => {
       // Only update text if element has no child elements (text-only nodes)
-      // This prevents destroying child elements like <br> or <span> inside the node
       const hasChildElements = Array.from(el.childNodes).some(n => n.nodeType === Node.ELEMENT_NODE);
       if (hasChildElements) return;
 
@@ -35,7 +34,10 @@
   /* ---- VIDEO LAZY LOAD ---- */
   document.querySelectorAll('.video-trigger').forEach(trigger => {
     trigger.addEventListener('click', () => {
-      const src = trigger.dataset.src;
+      // Use EN-specific src if available and site is in EN mode
+      const src = (currentLang === 'en' && trigger.dataset.srcEn)
+        ? trigger.dataset.srcEn
+        : trigger.dataset.src;
       if (!src) return;
 
       const embed = trigger.nextElementSibling;
