@@ -332,8 +332,8 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 .project {
   background: var(--bg);
   padding: var(--space-lg) var(--space-md);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto auto;
   gap: 0.9rem;
   transition: background 0.35s var(--ease);
 }
@@ -389,13 +389,14 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 
 .project-desc {
   max-width: 420px;
+  align-self: start;
 }
 
 .project-desc p {
   font-size: 0.875rem;
   color: var(--text-muted);
-  line-height: 1.85;
-  margin: 0 0 0.75em 0;
+  line-height: 1.9;
+  margin: 0 0 0.9em 0;
   opacity: 0.88;
 }
 
@@ -404,7 +405,6 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .video-trigger {
-  margin-top: auto;
   cursor: pointer;
 }
 
