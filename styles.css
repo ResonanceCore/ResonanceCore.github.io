@@ -388,10 +388,19 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
 }
 
 .project-desc {
+  max-width: 420px;
+}
+
+.project-desc p {
   font-size: 0.875rem;
   color: var(--text-muted);
-  line-height: 1.8;
-  max-width: 460px;
+  line-height: 1.85;
+  margin: 0 0 0.75em 0;
+  opacity: 0.88;
+}
+
+.project-desc p:last-child {
+  margin-bottom: 0;
 }
 
 .video-trigger {
