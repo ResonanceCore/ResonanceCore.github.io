@@ -397,12 +397,9 @@ button { cursor: pointer; background: none; border: none; font: inherit; color: 
   text-transform: uppercase;
 }
 
-p.project-desc {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  line-height: 1.9;
+div.project-desc {
   max-width: 460px;
-  opacity: 0.88;
+  align-self: start;
 }
 
 .project-desc p {
